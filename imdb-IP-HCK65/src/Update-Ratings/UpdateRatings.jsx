@@ -20,7 +20,7 @@ const UpdateRating = () => {
     const fetchRatingData = async () => {
       try {
         const response = await axios.get(
-          `http://localhost:3000/ratings/${id}`,
+          `https://api.saviours.site/ratings/${id}`,
           {
             headers: {
               Authorization: `Bearer ${localStorage.getItem("access_token")}`,
@@ -102,7 +102,7 @@ const UpdateRating = () => {
               value={ratingData.userId}
               onChange={handleChange}
               required
-              disabled 
+              disabled
               style={inputStyle}
             />
             <label
