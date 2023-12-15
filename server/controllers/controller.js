@@ -3,7 +3,6 @@ const { Op } = require('sequelize');
 const { cloudinary } = require('../middlewares/uploadmiddleware');
 const axios = require('axios');
 
-
 class Controller {
 
   static async getAllUsers(req, res, next) {
@@ -21,7 +20,8 @@ class Controller {
   }
 
   static getTopRatedMovies = async (req, res, next) => {
-    const apiKey = "eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJkY2FlZDhjN2YwNzUyOTliYjE4ZDQ5NmRmZGM5ZTdkOCIsInN1YiI6IjY1NzdkZDg4YmJlMWRkMDBmZTJjMzY1MSIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.OYoseG8GPVLwPOLkPnriarAow70EaxmL2EL2qfQoH94";
+    const apiKey = 'eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJkY2FlZDhjN2YwNzUyOTliYjE4ZDQ5NmRmZGM5ZTdkOCIsInN1YiI6IjY1NzdkZDg4YmJlMWRkMDBmZTJjMzY1MSIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.OYoseG8GPVLwPOLkPnriarAow70EaxmL2EL2qfQoH94';
+
     try {
       const page = req.query.page || 1;
       const pageSize = req.query.pageSize || 20;
@@ -49,7 +49,8 @@ class Controller {
 
   static async getDetailedMovies(req, res, next) {
     const { id } = req.params;
-    const apiKey = "eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJkY2FlZDhjN2YwNzUyOTliYjE4ZDQ5NmRmZGM5ZTdkOCIsInN1YiI6IjY1NzdkZDg4YmJlMWRkMDBmZTJjMzY1MSIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.OYoseG8GPVLwPOLkPnriarAow70EaxmL2EL2qfQoH94";
+    console.log(id);
+    const apiKey = '';
 
     const options = {
       method: 'GET',
