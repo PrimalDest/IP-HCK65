@@ -50,7 +50,7 @@ class Controller {
   static async getDetailedMovies(req, res, next) {
     const { id } = req.params;
     console.log(id);
-    const apiKey = '';
+    const apiKey = 'eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJkY2FlZDhjN2YwNzUyOTliYjE4ZDQ5NmRmZGM5ZTdkOCIsInN1YiI6IjY1NzdkZDg4YmJlMWRkMDBmZTJjMzY1MSIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.OYoseG8GPVLwPOLkPnriarAow70EaxmL2EL2qfQoH94';
 
     const options = {
       method: 'GET',
