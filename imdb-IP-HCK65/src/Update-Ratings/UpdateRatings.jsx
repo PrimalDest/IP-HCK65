@@ -49,7 +49,7 @@ const UpdateRating = () => {
     e.preventDefault();
 
     try {
-      await axios.put(`http://localhost:3000/ratings/${id}`, ratingData, {
+      await axios.put(`https://api.saviours.site/ratings/${id}`, ratingData, {
         headers: {
           Authorization: `Bearer ${localStorage.getItem("access_token")}`,
         },

@@ -24,11 +24,14 @@ const Login = () => {
 
       if (isLoggedIn) {
         try {
-          const response = await axios.get("http://localhost:3000/user/all", {
-            headers: {
-              Authorization: `Bearer ${localStorage.getItem("access_token")}`,
-            },
-          });
+          const response = await axios.get(
+            "https://api.saviours.site/user/all",
+            {
+              headers: {
+                Authorization: `Bearer ${localStorage.getItem("access_token")}`,
+              },
+            }
+          );
 
           const allUsers = response.data;
           const userInLocalStorage = JSON.parse(
@@ -87,9 +90,12 @@ const Login = () => {
     const google_token = response.credential;
 
     try {
-      const { data } = await axios.post("http://localhost:3000/user/login", {
-        google_token,
-      });
+      const { data } = await axios.post(
+        "https://api.saviours.site/user/login",
+        {
+          google_token,
+        }
+      );
 
       const { message, access_token } = data;
 
@@ -101,7 +107,7 @@ const Login = () => {
         const email = emailMatch[0];
 
         const loggedInUserResponse = await axios.get(
-          "http://localhost:3000/user/all"
+          "https://api.saviours.site/user/all"
         );
 
         const loggedInUser = loggedInUserResponse.data.find(
@@ -122,32 +128,6 @@ const Login = () => {
     } catch (error) {
       handleLoginError();
       console.error("Error during Google Sign-In", error);
-    }
-  };
-
-  const handleSubmit = async (event) => {
-    event.preventDefault();
-
-    try {
-      const { data } = await axios.post(
-        "http://localhost:3000/user/login",
-        form
-      );
-
-      const loggedInUser = data.user;
-
-      if (loggedInUser) {
-        localStorage.setItem("access_token", data.access_token);
-        localStorage.setItem("logged_in_user", JSON.stringify(loggedInUser));
-
-        handleLoginSuccessWithRedirect(loggedInUser);
-      } else {
-        handleLoginError();
-        console.error("Logged-in user not found in the user list.");
-      }
-    } catch (error) {
-      handleLoginError();
-      console.error("Error during authentication", error);
     }
   };
 

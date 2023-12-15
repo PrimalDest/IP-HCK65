@@ -3,12 +3,14 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import Navbar from "../Navbar/Navbar";
 
-const RatingForm = ({ userId, movieId }) => {
-  const [userIdInput, setUserIdInput] = useState(userId);
+const RatingForm = ({ movieId }) => {
+  const [userIdInput, setUserIdInput] = useState("");
   const [rating, setRating] = useState("");
   const [imdbid, setImdbid] = useState(movieId);
   const [accessToken, setAccessToken] = useState("");
   const [errorMessage, setErrorMessage] = useState(null);
+  const [successMessage, setSuccessMessage] = useState(null);
+  const [loading, setLoading] = useState(false);
 
   const navigate = useNavigate();
 
@@ -16,6 +18,11 @@ const RatingForm = ({ userId, movieId }) => {
     const storedToken = localStorage.getItem("access_token");
     if (storedToken) {
       setAccessToken(storedToken);
+    }
+
+    const loggedInUser = JSON.parse(localStorage.getItem("logged_in_user"));
+    if (loggedInUser) {
+      setUserIdInput(loggedInUser.id);
     }
   }, []);
 
@@ -39,9 +46,14 @@ const RatingForm = ({ userId, movieId }) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
+    setLoading(true);
     try {
+      if (!userIdInput || !rating || !imdbid) {
+        throw new Error("All fields are required");
+      }
+
       const response = await axios.post(
-        "http://localhost:3000/ratings",
+        "https://api.saviours.site/ratings",
         {
           userId: userIdInput,
           rating,
@@ -56,11 +68,19 @@ const RatingForm = ({ userId, movieId }) => {
 
       console.log("New rating created:", response.data);
 
+      setSuccessMessage("Rating submitted successfully!");
       navigate("/rating");
     } catch (error) {
       console.error("Error creating rating:", error);
       setErrorMessage("An error occurred while creating the rating.");
+    } finally {
+      setLoading(false);
     }
+  };
+
+  const clearMessages = () => {
+    setErrorMessage(null);
+    setSuccessMessage(null);
   };
 
   return (
@@ -75,26 +95,21 @@ const RatingForm = ({ userId, movieId }) => {
           height: "100vh",
         }}
       >
-        <h2>Create Rating</h2>
+        <h2 style={{ marginBottom: "20px" }}>Create Rating</h2>
         <form
           style={{
             width: "300px",
             marginTop: "20px",
+            border: "1px solid #ccc",
+            padding: "20px",
+            borderRadius: "8px",
+            boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)",
+            boxSizing: "border-box",
           }}
           onSubmit={handleSubmit}
         >
-          <div
-            style={{
-              marginBottom: "15px",
-            }}
-          >
-            <label
-              htmlFor="userId"
-              style={{
-                display: "block",
-                marginBottom: "5px",
-              }}
-            >
+          <div style={{ marginBottom: "15px" }}>
+            <label htmlFor="userId" style={labelStyle}>
               UserId:
             </label>
             <input
@@ -104,14 +119,9 @@ const RatingForm = ({ userId, movieId }) => {
               onChange={handleChange}
               required
               style={inputStyle}
+              onFocus={clearMessages}
             />
-            <label
-              htmlFor="rating"
-              style={{
-                display: "block",
-                marginBottom: "5px",
-              }}
-            >
+            <label htmlFor="rating" style={labelStyle}>
               Rating:
             </label>
             <input
@@ -121,14 +131,9 @@ const RatingForm = ({ userId, movieId }) => {
               onChange={handleChange}
               required
               style={inputStyle}
+              onFocus={clearMessages}
             />
-            <label
-              htmlFor="imdbid"
-              style={{
-                display: "block",
-                marginBottom: "5px",
-              }}
-            >
+            <label htmlFor="imdbid" style={labelStyle}>
               IMDb ID:
             </label>
             <input
@@ -138,22 +143,15 @@ const RatingForm = ({ userId, movieId }) => {
               onChange={handleChange}
               required
               style={inputStyle}
+              onFocus={clearMessages}
             />
           </div>
-          <button type="submit" style={buttonStyle} onSubmit={handleSubmit}>
-            Submit Rating
+          <button type="submit" style={buttonStyle} disabled={loading}>
+            {loading ? "Submitting..." : "Submit Rating"}
           </button>
         </form>
-        {errorMessage && (
-          <p
-            style={{
-              color: "red",
-              marginTop: "10px",
-            }}
-          >
-            {errorMessage}
-          </p>
-        )}
+        {successMessage && <p style={successStyle}>{successMessage}</p>}
+        {errorMessage && <p style={errorStyle}>{errorMessage}</p>}
       </div>
     </>
   );
@@ -177,6 +175,22 @@ const buttonStyle = {
   borderRadius: "4px",
   cursor: "pointer",
   fontSize: "16px",
+  marginTop: "10px",
+};
+
+const labelStyle = {
+  display: "block",
+  marginBottom: "5px",
+};
+
+const successStyle = {
+  color: "green",
+  marginTop: "10px",
+};
+
+const errorStyle = {
+  color: "red",
+  marginTop: "10px",
 };
 
 export default RatingForm;

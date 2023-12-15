@@ -18,7 +18,7 @@ const MovieDetail = () => {
 
       const options = {
         method: "GET",
-        url: `http://localhost:3000/movie/${movieId}`,
+        url: `https://api.saviours.site/movie/${movieId}`,
         headers: {
           Authorization: `Bearer ${localStorage.getItem("access_token")}`,
         },
@@ -58,7 +58,7 @@ const MovieDetail = () => {
         >
           <div>
             <img
-              src={`https://image.tmdb.org/t/p/original${movieDetail.poster_path}`}
+              src={`https://image.tmdb.org/t/p/original${movieDetail.backdrop_path}`}
               alt={movieDetail.title}
               style={{ objectFit: "cover", height: "400px", width: "100%" }}
             />

@@ -36,7 +36,7 @@ const MovieList = () => {
 
       const options = {
         method: "GET",
-        url: `http://localhost:3000/movie?language=en-US&page=${page}`,
+        url: `https://api.saviours.site/movie?language=en-US&page=${page}`,
         headers: {
           Authorization: `Bearer ${access_token}`,
         },

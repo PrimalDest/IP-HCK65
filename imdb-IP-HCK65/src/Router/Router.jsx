@@ -6,8 +6,13 @@ import MovieDetail from "../MovieDetail/MovieDetail";
 import AllRating from "../AllRatings/AllRatings";
 import CreateRatings from "../Create-Ratings/CreateRatings";
 import UpdateRating from "../Update-Ratings/UpdateRatings";
+import Home from "../Home";
 
 const router = createBrowserRouter([
+  {
+    path: "/",
+    element: <Home />,
+  },
   {
     path: "/Login",
     element: <Login />,

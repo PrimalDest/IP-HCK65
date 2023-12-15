@@ -14,7 +14,7 @@ const RatingList = () => {
     const fetchRatings = async () => {
       try {
         const accessToken = localStorage.getItem("access_token");
-        const response = await axios.get("http://localhost:3000/ratings/all", {
+        const response = await axios.get("https://api.saviours.site/ratings/all", {
           headers: {
             Authorization: `Bearer ${accessToken}`,
           },
@@ -38,7 +38,6 @@ const RatingList = () => {
   }, []);
 
   const handleUpdateRating = (ratingId) => {
-    // Navigate to the update page with the specific ratingId
     navigate(`/update/${ratingId}`);
   };
 
@@ -57,7 +56,7 @@ const RatingList = () => {
       });
 
       if (result.isConfirmed) {
-        await axios.delete(`http://localhost:3000/ratings/${ratingId}`, {
+        await axios.delete(`https://api.saviours.site/ratings/${ratingId}`, {
           headers: {
             Authorization: `Bearer ${accessToken}`,
           },
