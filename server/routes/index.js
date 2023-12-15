@@ -10,4 +10,8 @@ router.use('/user', AuthRouter);
 router.use('/ratings', authenticateToken, RatingRouter);
 router.use('/movie', authenticateToken, MovieRouter);
 
+router.get('/', (req, res) => {
+    res.send('Welcome! Please log in to access the application.');
+});
+
 module.exports = router;
