@@ -12,3 +12,4 @@ function verifyToken(access_token) {
 }
 
 module.exports = { generateToken, verifyToken };
+
