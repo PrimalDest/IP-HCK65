@@ -51,6 +51,11 @@ module.exports = (sequelize, DataTypes) => {
           },
         },
       },
+      isPremium: {
+        type: DataTypes.BOOLEAN,
+        defaultValue: false,
+        allowNull: false,
+      },
     },
     {
       sequelize,

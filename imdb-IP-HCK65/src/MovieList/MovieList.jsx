@@ -1,6 +1,14 @@
-// MovieList.js
-import React, { useState, useEffect } from "react";
+import React, { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import {
+  setMovies,
+  setLoading,
+  setError,
+  setPage,
+  setTotalPages,
+  setSearchTerm,
+} from "../component/movieSlice";
 import axios from "axios";
 import MovieCard from "../MovieCard/MovieCard";
 import Navbar from "../Navbar/Navbar";
@@ -16,13 +24,9 @@ const ErrorComponent = ({ error }) => (
 );
 
 const MovieList = () => {
-  const [movies, setMovies] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
-  const [page, setPage] = useState(1);
-  const [totalPages, setTotalPages] = useState(1);
-  const [maxPages] = useState(5);
-  const [searchTerm, setSearchTerm] = useState("");
+  const dispatch = useDispatch();
+  const { movies, loading, error, page, totalPages, maxPages, searchTerm } =
+    useSelector((state) => state.movies);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -43,33 +47,34 @@ const MovieList = () => {
       };
 
       try {
+        dispatch(setLoading(true));
+
         const response = await axios.request(options);
         const movieIds = response.data.results.map((movie) => movie.id);
         localStorage.setItem("movieIds", JSON.stringify(movieIds));
 
-        setMovies(response.data.results);
-        setTotalPages(response.data.total_pages);
-        setLoading(false);
+        dispatch(setMovies(response.data.results));
+        dispatch(setTotalPages(response.data.total_pages));
+        dispatch(setLoading(false));
       } catch (error) {
         console.error(error);
-        setError("Failed to fetch data. Please try again.");
-        setLoading(false);
+        dispatch(setError("Failed to fetch data. Please try again."));
+        dispatch(setLoading(false));
       }
     };
 
     fetchData();
-  }, [page, searchTerm]);
+  }, [dispatch, navigate, page, searchTerm]);
 
   const handleNextPage = () => {
     if (page < maxPages) {
-      setPage((prevPage) => Math.min(prevPage + 1, totalPages));
+      dispatch(setPage(Math.min(page + 1, totalPages)));
     }
   };
 
   const handlePrevPage = () => {
-    setPage((prevPage) => Math.max(prevPage - 1, 1));
+    dispatch(setPage(Math.max(page - 1, 1)));
   };
-
   const renderPageButtons = () => {
     const pageCount = Math.min(totalPages, maxPages);
     const buttons = [];

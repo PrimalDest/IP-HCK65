@@ -147,15 +147,6 @@ class Controller {
       next(error);
     }
   }
-
-  static async uploadImage(req, res, next) {
-    try {
-      const result = await cloudinary.uploader.upload(req.file.path);
-      return res.status(200).json({ imageUrl: result.secure_url });
-    } catch (error) {
-      next(error);
-    }
-  }
 }
 
 module.exports = Controller;
